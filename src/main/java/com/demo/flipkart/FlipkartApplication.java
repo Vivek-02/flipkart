@@ -1,23 +1,27 @@
 package com.demo.flipkart;
 
+import com.demo.flipkart.storage.StorageProperties;
+import com.demo.flipkart.storage.StorageService;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
+@EnableConfigurationProperties(StorageProperties.class)
 public class FlipkartApplication {
 
 	public static void main(String[] args) {
-		/*AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(OrderConfig.class);
-		OrderController orderController = context.getBean("orderControllerBean", OrderController.class);
-		orderController.test();*/
 		SpringApplication.run(FlipkartApplication.class, args);
 	}
 
 
-	/*@Bean
-	CommandLineRunner commandLineRunner() {
-		return args -> {
-			System.out.println("Hello");
+	@Bean
+	CommandLineRunner init(StorageService storageService) {
+		return (args) -> {
+			storageService.deleteAll();
+			storageService.init();
 		};
-	}*/
+	}
 }
